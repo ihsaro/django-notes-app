@@ -5,15 +5,15 @@ from django.contrib.auth.decorators import login_required
 
 
 @login_required
-def list(request):
+def list_view(request):
     return render(request, 'notes/list.html')
 
 
 @login_required
-def create(request):
+def create_view(request):
     return render(request, 'notes/list.html')
 
 
 @login_required
-def update(request, note_id):
+def update_view(request, note_id):
     return render(request, 'notes/list.html')

@@ -40,7 +40,8 @@
             <ul class="navbar-nav ml-auto topnav">
                 {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i>LOG OUT</a>
+                    <a class="nav-link" href="{% url 'authentication:logout' %}"><i class="fas fa-sign-out-alt"></i>LOG
+                        OUT</a>
                 </li>
                 {% else %}
                 <li class="nav-item">
