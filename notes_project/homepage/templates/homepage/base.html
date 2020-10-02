@@ -18,6 +18,9 @@
     <!-- Base Stylesheet -->
     <link rel="stylesheet" type="text/css" href="{% static 'homepage/css/base.css' %}">
 
+    {% block stylesheets %}
+    {% endblock %}
+
     {% if title %}
     <title>Notes App - {{ title }}</title>
     {% else %}
@@ -41,10 +44,12 @@
                 </li>
                 {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fas fa-sign-in-alt"></i>LOGIN</a>
+                    <a class="nav-link" href="{% url 'authentication:login' %}"><i
+                            class="fas fa-sign-in-alt"></i>LOGIN</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fas fa-user-plus"></i>REGISTER</a>
+                    <a class="nav-link" href="{% url 'authentication:register' %}"><i
+                            class="fas fa-user-plus"></i>REGISTER</a>
                 </li>
                 {% endif %}
             </ul>
@@ -65,6 +70,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
+
+    {% block scripts %}
+    {% endblock %}
 </body>
 
 </html>
