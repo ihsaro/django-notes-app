@@ -1,6 +1,35 @@
 {% extends 'homepage/base.html' %}
 {% load static %}
 {% block stylesheets %}
+<link rel="stylesheet" href="{% static 'notes/css/list.css' %}">
 {% endblock stylesheets %}
 {% block content %}
+<div class="container main-container">
+    <table class="table table-borderless table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Notes Title</th>
+                <th scope="col">Notes Description</th>
+                <th scope="col">Notes Type</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for note in notes %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ note.note_title }}</td>
+                <td>{{ note.note_description }}</td>
+                <td>{{ note.get_note_type_display }}</td>
+                <td>
+                    <a href="{% url 'notes:update' note.id %}"><i class="far fa-edit"></i></a>
+                    <i class="far fa-trash-alt"></i>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock content %}
