@@ -14,30 +14,35 @@
             {% endif %}
         </div>
     </div>
-    <form method="POST" action="{% url 'authentication:login' %}">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="note-title">Title</label>
-            <input type="text" class="form-control" id="note-title" name="note-title" placeholder="Enter Note Title">
-        </div>
-        <div class="form-group">
-            <label for="note-type">Type</label>
-            <select class="form-control" id="note-type" name="note-type">
-                <option value="R">Random</option>
-                <option value="N">Not Important</option>
-                <option value="M">Most Important</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="note-description">Description</label>
-            <textarea class="form-control" id="note-description" name="note-description"
-                placeholder="Enter Note Description"></textarea>
-        </div>
-        {% if note %}
-        <button type="submit" class="btn btn-primary">Update</button>
+    {% if note %}
+    <form method="POST" action="{% url 'notes:update' note_id=note.id %}">
         {% else %}
-        <button type="submit" class="btn btn-primary">Create</button>
-        {% endif %}
-    </form>
+        <form method="POST" action="{% url 'notes:create' %}">
+            {% endif %}
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="note-title">Title</label>
+                <input type="text" class="form-control" id="note-title" name="note-title" placeholder="Enter Note Title"
+                    value="{{ note.note_title }}" />
+            </div>
+            <div class="form-group">
+                <label for="note-type">Type</label>
+                <select class="form-control" id="note-type" name="note-type">
+                    <option value="R">Random</option>
+                    <option value="N">Not Important</option>
+                    <option value="M">Most Important</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="note-description">Description</label>
+                <textarea class="form-control" id="note-description" name="note-description"
+                    placeholder="Enter Note Description">{{ note.note_description }}</textarea>
+            </div>
+            {% if note %}
+            <button type="submit" class="btn btn-primary">Update</button>
+            {% else %}
+            <button type="submit" class="btn btn-primary">Create</button>
+            {% endif %}
+        </form>
 </div>
 {% endblock content %}
