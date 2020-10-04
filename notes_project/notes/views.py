@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import Note
 
@@ -54,3 +56,19 @@ def update_view(request, note_id):
             return render(request, 'notes/create.html', context)
         except Note.DoesNotExist:
             return redirect('notes:list')
+
+
+@login_required
+@require_POST
+@csrf_exempt
+def delete_view(request):
+    current_user = request.user
+    note_id_list = request.POST.getlist('id[]')
+    for note_id in note_id_list:
+        try:
+            note = Note.objects.all().filter(user=current_user).get(pk=note_id)
+            note.delete()
+        except Note.DoesNotExist:
+            pass
+
+    return redirect('notes:list')
