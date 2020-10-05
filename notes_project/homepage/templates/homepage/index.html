@@ -3,8 +3,11 @@
 
 {% block stylesheets %}
 <!-- Index Stylesheet -->
-<link rel="stylesheet" type="text/css" href="{% static 'homepage/css/index.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'homepage/css/index.css' %}" />
 {% endblock stylesheets %}
 
 {% block content %}
+<div id="homepage-container" class="container-fluid text-center">
+    <h1>Welcome to Notes App</h1>
+</div>
 {% endblock content %}
