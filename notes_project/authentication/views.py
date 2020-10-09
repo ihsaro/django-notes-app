@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
@@ -14,7 +15,8 @@ def login_view(request):
             login(request, user)
             return redirect('notes:list')
         else:
-            return redirect('authentication:login')
+            messages.error(request, 'Invalid Credentials')
+            return render(request, 'authentication/login.html')
     elif request.method == 'GET' and request.user.is_authenticated:
         return redirect('notes:list')
     else:
@@ -32,9 +34,11 @@ def register_view(request):
 
         user = User.objects.create_user(username=username, password=password)
         if user is not None:
-            return redirect('authentication:login')
+            messages.success(request, 'Account created successfully, please log in!')
+            return render(request, 'authentication/login.html')
         else:
-            return redirect('authentication:register')
+            messages.error(request, 'Error creating account, please try again!')
+            return render(request, 'authentication/register.html')
     elif request.method == 'GET' and request.user.is_authenticated:
         return redirect('notes:list')
     else:
@@ -43,4 +47,5 @@ def register_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('authentication:login')
+    messages.success(request, 'Logout Successful')
+    return render(request, 'authentication/login.html')
