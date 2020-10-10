@@ -30,7 +30,11 @@ def register_view(request):
         confirm_password = request.POST['confirm-password']
 
         if password != confirm_password:
-            return redirect('authentication:register')
+            context = {
+                'username': username
+            }
+            messages.error(request, 'Passwords do not match')
+            return render(request, 'authentication/register.html', context)
 
         user = User.objects.create_user(username=username, password=password)
         if user is not None:
