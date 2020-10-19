@@ -28,9 +28,23 @@
             <div class="form-group">
                 <label for="note-type">Type</label>
                 <select class="form-control" id="note-type" name="note-type">
+                    {% if note.note_type == 'R' %}
+                    <option value="R" selected>Random</option>
+                    {% else %}
                     <option value="R">Random</option>
+                    {% endif %}
+
+                    {% if note.note_type == 'N' %}
+                    <option value="N" selected>Not Important</option>
+                    {% else %}
                     <option value="N">Not Important</option>
+                    {% endif %}
+
+                    {% if note.note_type == 'M' %}
+                    <option value="M" selected>Most Important</option>
+                    {% else %}
                     <option value="M">Most Important</option>
+                    {% endif %}
                 </select>
             </div>
             <div class="form-group">
