@@ -6,7 +6,33 @@
 {% endblock stylesheets %}
 
 {% block content %}
-<div id="management-list-users-container" class="container-fluid text-center">
-    <h1>Welcome to List App</h1>
+<div class="container text-center management-list-users-container">
+    <table class="table table-borderless table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Customer ID</th>
+                <th scope="col">Customer Username</th>
+                <th scope="col">Number Of Notes</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for customer in customers %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ customer.id }}</td>
+                <td>{{ customer.username }}</td>
+                <td>{{ customer.customer_number_of_notes }}</td>
+                <td>
+                    <a href="#" onclick="addDeletedCustomer({{ customer.id }})"><i id="customer_delete_{{ customer.id }}"
+                            class="far fa-trash-alt"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button class="btn btn-danger" onclick="batchDeleteNotes('{% url 'notes:delete' %}')">DELETE NOTES</button>
 </div>
 {% endblock content %}
