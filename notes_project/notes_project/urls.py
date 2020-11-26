@@ -21,4 +21,5 @@ urlpatterns = [
     path('', include('homepage.urls')),
     path('authentication/', include('authentication.urls')),
     path('notes/', include('notes.urls')),
+    path('management/', include('management.urls')),
 ]

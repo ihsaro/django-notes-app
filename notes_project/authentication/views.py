@@ -50,6 +50,9 @@ def register_view(request):
 
 
 def logout_view(request):
-    logout(request)
-    messages.success(request, 'Logout Successful')
+    if request.user.is_authenticated:
+        logout(request)
+        messages.success(request, 'Logout Successful')
+    else:
+        messages.warning(request, 'No user is logged in, please log in or create an account to continue!')
     return render(request, 'authentication/login.html')
