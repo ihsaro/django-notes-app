@@ -22,9 +22,9 @@
             {% for customer in customers %}
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
-                <td>{{ customer.id }}</td>
-                <td>{{ customer.username }}</td>
-                <td>{{ customer.customer_number_of_notes }}</td>
+                <td>{{ customer.user_details.id }}</td>
+                <td>{{ customer.user_details.username }}</td>
+                <td>{{ customer.number_of_notes }}</td>
                 <td>
                     <a href="#" onclick="addDeletedCustomer({{ customer.id }})"><i id="customer_delete_{{ customer.id }}"
                             class="far fa-trash-alt"></i></a>
