@@ -8,6 +8,24 @@ from notes.models import Note
 
 @login_required
 @allowed_groups(groups=['management'])
+def dashboard_view(request):
+    if request.method == 'GET':
+        groups_names = []
+
+        for group in request.user.groups.all():
+            groups_names.append(group.name)
+
+        context = {
+            'groups_names': groups_names,
+            'number_of_customers': User.objects.filter(groups__name='customer').count(),
+            'number_of_notes': Note.objects.count(),
+        }
+
+        return render(request, 'management/dashboard.html', context=context)
+
+
+@login_required
+@allowed_groups(groups=['management'])
 def list_customers_view(request):
     if request.method == 'GET':
 

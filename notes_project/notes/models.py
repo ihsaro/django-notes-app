@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -16,3 +17,4 @@ class Note(models.Model):
     note_type = models.CharField(max_length=30, choices=NOTES_CATEGORIES)
     note_title = models.CharField(max_length=100)
     note_description = models.CharField(max_length=1000)
+    created_date = models.DateTimeField(auto_created=True, default=datetime.utcnow())

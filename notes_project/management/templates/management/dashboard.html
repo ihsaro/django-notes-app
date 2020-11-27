@@ -1,0 +1,40 @@
+{% extends "homepage/base.html" %}
+{% load static %}
+
+{% block stylesheets %}
+<!-- Index Stylesheet -->
+<link rel="stylesheet" type="text/css" href="{% static 'management/css/dashboard.css' %}" />
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="container dashboard-container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary text-center mb-5" style="max-width: 18rem;">
+                <div class="card-header">NUMBER OF CUSTOMERS</div>
+                <div class="card-body">
+                    <i class="card-title fas fa-users"></i>
+                    <p class="card-text">{{ number_of_customers }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-primary text-center mb-5" style="max-width: 18rem;">
+                <div class="card-header">NUMBER OF NOTES</div>
+                <div class="card-body">
+                    <i class="card-title fas fa-sticky-note"></i>
+                    <p class="card-text">{{ number_of_notes }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block scripts %}
+<script type="text/javascript" src="{% static 'management/js/dashboard.js' %}"></script>
+{% endblock scripts %}

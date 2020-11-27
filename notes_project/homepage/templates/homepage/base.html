@@ -34,7 +34,11 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        {% if user.is_authenticated and 'management' in groups_names %}
+        <a class="navbar-brand" href="#">NOTES APP - Admin</a>
+        {% else %}
         <a class="navbar-brand" href="#">NOTES APP</a>
+        {% endif %}
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -45,7 +49,7 @@
                 {% if user.is_authenticated %}
                 {% if 'management' in groups_names %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'management:list_customers' %}"><i class="fas fa-users"></i>CUSTOMERS</a>
+                    <a class="nav-link" href="{% url 'management:dashboard' %}"><i class="fas fa-chart-line"></i>DASHBOARD</a>
                 </li>
                 {% endif %}
                 <li class="nav-item">
@@ -79,6 +83,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
+    <!-- Chart JS Script -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
     {% block scripts %}
     {% endblock %}
