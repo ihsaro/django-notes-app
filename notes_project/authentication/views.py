@@ -13,12 +13,27 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('notes:list')
+
+            groups_names = []
+            for group in request.user.groups.all():
+                groups_names.append(group.name)
+
+            if 'customer' in groups_names:
+                return redirect('notes:list')
+            elif 'management' in groups_names:
+                return redirect('management:dashboard')
         else:
             messages.error(request, 'Invalid Credentials')
             return render(request, 'authentication/login.html')
     elif request.method == 'GET' and request.user.is_authenticated:
-        return redirect('notes:list')
+        groups_names = []
+        for group in request.user.groups.all():
+            groups_names.append(group.name)
+
+        if 'customer' in groups_names:
+            return redirect('notes:list')
+        elif 'management' in groups_names:
+            return redirect('management:dashboard')
     else:
         return render(request, 'authentication/login.html')
 
@@ -44,7 +59,14 @@ def register_view(request):
             messages.error(request, 'Error creating account, please try again!')
             return render(request, 'authentication/register.html')
     elif request.method == 'GET' and request.user.is_authenticated:
-        return redirect('notes:list')
+        groups_names = []
+        for group in request.user.groups.all():
+            groups_names.append(group.name)
+
+        if 'customer' in groups_names:
+            return redirect('notes:list')
+        elif 'management' in groups_names:
+            return redirect('management:dashboard')
     else:
         return render(request, 'authentication/register.html')
 

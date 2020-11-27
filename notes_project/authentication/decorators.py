@@ -12,6 +12,6 @@ def allowed_groups(groups=[]):
             if group in groups:
                 return view_func(request, *args, **kwargs)
             else:
-                return HttpResponse('dd')
+                return HttpResponse('Not authorized to view this page!')
         return wrapper_func
     return decorator

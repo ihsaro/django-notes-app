@@ -8,7 +8,7 @@ from .models import Note
 
 
 @login_required
-@allowed_groups(groups=['customers'])
+@allowed_groups(groups=['customer'])
 def list_view(request):
     current_user = request.user
     context = {
@@ -18,7 +18,7 @@ def list_view(request):
 
 
 @login_required
-@allowed_groups(groups=['customers'])
+@allowed_groups(groups=['customer'])
 def create_view(request):
     if request.method == 'POST':
         note_title = request.POST['note-title']
@@ -37,7 +37,7 @@ def create_view(request):
 
 
 @login_required
-@allowed_groups(groups=['customers'])
+@allowed_groups(groups=['customer'])
 def update_view(request, note_id):
     if request.method == 'POST':
         note_title = request.POST['note-title']
