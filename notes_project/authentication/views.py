@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from .decorators import redirect_to_default_if_authenticated
 
-# Create your views here.
 
-
+@redirect_to_default_if_authenticated()
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -25,19 +25,11 @@ def login_view(request):
         else:
             messages.error(request, 'Invalid Credentials')
             return render(request, 'authentication/login.html')
-    elif request.method == 'GET' and request.user.is_authenticated:
-        groups_names = []
-        for group in request.user.groups.all():
-            groups_names.append(group.name)
-
-        if 'customer' in groups_names:
-            return redirect('notes:list')
-        elif 'management' in groups_names:
-            return redirect('management:dashboard')
-    else:
+    elif request.method == 'GET':
         return render(request, 'authentication/login.html')
 
 
+@redirect_to_default_if_authenticated()
 def register_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -58,16 +50,7 @@ def register_view(request):
         else:
             messages.error(request, 'Error creating account, please try again!')
             return render(request, 'authentication/register.html')
-    elif request.method == 'GET' and request.user.is_authenticated:
-        groups_names = []
-        for group in request.user.groups.all():
-            groups_names.append(group.name)
-
-        if 'customer' in groups_names:
-            return redirect('notes:list')
-        elif 'management' in groups_names:
-            return redirect('management:dashboard')
-    else:
+    elif request.method == 'GET':
         return render(request, 'authentication/register.html')
 
 
