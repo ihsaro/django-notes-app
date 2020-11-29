@@ -1,27 +1,17 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .decorators import redirect_to_default_if_authenticated
+from .selectors import get_default_route_to_redirect
+from .services import authenticate_and_login_user
 
 
 @redirect_to_default_if_authenticated()
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-
-            groups_names = []
-            for group in request.user.groups.all():
-                groups_names.append(group.name)
-
-            if 'customer' in groups_names:
-                return redirect('notes:list')
-            elif 'management' in groups_names:
-                return redirect('management:dashboard')
+        if authenticate_and_login_user(request=request) is not None:
+            return redirect(get_default_route_to_redirect(request=request))
         else:
             messages.error(request, 'Invalid Credentials')
             return render(request, 'authentication/login.html')
