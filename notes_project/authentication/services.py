@@ -9,3 +9,11 @@ def authenticate_and_login_user(*, request: HttpRequest) -> User:
         login(request, user)
         return User
     return None
+
+
+def validate_password_match(*, request: HttpRequest) -> bool:
+    return request.POST['password'] == request.POST['confirm-password']
+
+
+def create_user(*, request: HttpRequest) -> User:
+    return User.objects.create_user(username=request.POST['username'], password=request.POST['password'])

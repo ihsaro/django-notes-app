@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+from django.contrib.auth import logout
 from .decorators import redirect_to_default_if_authenticated
 from .selectors import get_default_route_to_redirect
-from .services import authenticate_and_login_user
+from .services import authenticate_and_login_user, validate_password_match, create_user
 
 
 @redirect_to_default_if_authenticated()
@@ -22,19 +21,14 @@ def login_view(request):
 @redirect_to_default_if_authenticated()
 def register_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        confirm_password = request.POST['confirm-password']
-
-        if password != confirm_password:
+        if validate_password_match(request=request) is False:
             context = {
-                'username': username
+                'username': request.POST['username']
             }
             messages.error(request, 'Passwords do not match')
             return render(request, 'authentication/register.html', context)
 
-        user = User.objects.create_user(username=username, password=password)
-        if user is not None:
+        if create_user(request=request) is not None:
             messages.success(request, 'Account created successfully, please log in!')
             return render(request, 'authentication/login.html')
         else:
