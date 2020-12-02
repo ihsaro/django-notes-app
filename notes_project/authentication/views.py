@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from .decorators import redirect_to_default_if_authenticated
 from .selectors import get_default_route_to_redirect
-from .services import authenticate_and_login_user, validate_password_match, create_user
+from .services import authenticate_and_login_user, validate_password_match, create_user, logout_user
 
 
 @redirect_to_default_if_authenticated()
@@ -39,8 +39,7 @@ def register_view(request):
 
 
 def logout_view(request):
-    if request.user.is_authenticated:
-        logout(request)
+    if logout_user(request=request) is True:
         messages.success(request, 'Logout Successful')
     else:
         messages.warning(request, 'No user is logged in, please log in or create an account to continue!')

@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.http import HttpRequest
 
@@ -17,3 +17,10 @@ def validate_password_match(*, request: HttpRequest) -> bool:
 
 def create_user(*, request: HttpRequest) -> User:
     return User.objects.create_user(username=request.POST['username'], password=request.POST['password'])
+
+def logout_user(*, request: HttpRequest) -> bool:
+    if request.user.is_authenticated:
+        logout(request)
+        return True
+    else:
+        return False
