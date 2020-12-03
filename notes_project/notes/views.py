@@ -5,30 +5,22 @@ from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import Note
+from .selectors import get_current_client_notes_list, get_current_client_notes_detail
+from .services import create_new_note_for_current_user, update_existing_note_for_current_user
 
 
 @login_required
 @allowed_groups(groups=['customer'])
 def list_view(request):
-    current_user = request.user
-    context = {
-        'notes': Note.objects.all().filter(user=current_user)
-    }
-    return render(request, 'notes/list.html', context)
+    return render(request, 'notes/list.html', context=get_current_client_notes_list(request=request))
 
 
+# TO BE REFACTORED IN TEMPLATE IN CASE OF ERROR
 @login_required
 @allowed_groups(groups=['customer'])
 def create_view(request):
     if request.method == 'POST':
-        note_title = request.POST['note-title']
-        note_type = request.POST['note-type']
-        note_description = request.POST['note-description']
-
-        note = Note(note_title=note_title, note_type=note_type,
-                    note_description=note_description, user=request.user)
-        note.save()
-        if note.id is not None:
+        if create_new_note_for_current_user(request=request) is True:
             return redirect('notes:list')
         else:
             return redirect('notes:create')
@@ -40,24 +32,15 @@ def create_view(request):
 @allowed_groups(groups=['customer'])
 def update_view(request, note_id):
     if request.method == 'POST':
-        note_title = request.POST['note-title']
-        note_type = request.POST['note-type']
-        note_description = request.POST['note-description']
-
-        note = Note.objects.get(pk=note_id)
-        note.note_title = note_title
-        note.note_type = note_type
-        note.note_description = note_description
-        note.save()
-
-        return redirect('notes:list')
+        if update_existing_note_for_current_user(request=request, note_id=note_id) is True:
+            return redirect('notes:list')
+        else:
+            return render(request, 'notes/create.html', context=get_current_client_notes_detail(request=request,
+                                                                                                note_id=note_id))
     else:
-        current_user = request.user
         try:
-            context = {
-                'note': Note.objects.all().filter(user=current_user).get(pk=note_id)
-            }
-            return render(request, 'notes/create.html', context)
+            return render(request, 'notes/create.html', context=get_current_client_notes_detail(request=request,
+                                                                                                note_id=note_id))
         except Note.DoesNotExist:
             return redirect('notes:list')
 
