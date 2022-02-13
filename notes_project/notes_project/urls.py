@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.auth.models import Group
 from django.urls import path, include
 
 urlpatterns = [
@@ -23,3 +24,6 @@ urlpatterns = [
     path('notes/', include('notes.urls')),
     path('management/', include('management.urls')),
 ]
+
+new_group, created = Group.objects.get_or_create(name='customer')
+new_group, created = Group.objects.get_or_create(name='management')
